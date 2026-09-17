@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Login</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial;
+
+            background: #f4f7f8;
+        }
+
+
+        .container {
+
+            width: 380px;
+
+            margin: 60px auto;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: rgb(55, 116, 116);
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-top: 18px;
+
+            font-weight: bold;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 12px;
+
+            margin-top: 7px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+        }
+
+
+        button {
+
+            width: 100%;
+
+            padding: 13px;
+
+            margin-top: 25px;
+
+            background: rgb(55, 116, 116);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 6px;
+
+            font-size: 16px;
+        }
+
+
+        .error {
+
+            text-align: center;
+
+            color: red;
+
+            font-weight: bold;
+        }
+
+
+        .link {
+
+            text-align: center;
+
+            margin-top: 20px;
+        }
+
+
+        .link a {
+
+            color: rgb(55, 116, 116);
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    {% include "navbar.html" %}
+
+
+    <div class="container">
+
+        <h1>
+            Login
+        </h1>
+
+
+        <form method="POST">
+
+            <label>
+                Username
+            </label>
+
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                required>
+
+
+            <label>
+                Password
+            </label>
+
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required>
+
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+        <p class="error">
+            {{ error }}
+        </p>
+
+        {% endif %}
+
+
+        <div class="link">
+
+            Don't have an account?
+
+            <a href="{{ url_for('register') }}">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

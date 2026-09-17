@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Home</title>
+
+    <style>
+
+        body {
+
+            margin:0;
+
+            font-family: Arial;
+
+            background: #f4f7f8;
+        }
+
+
+        .hero {
+
+            text-align: center;
+
+            padding: 80px 20px;
+        }
+
+
+        h1 {
+
+            color: rgb(55, 116, 116);
+
+            font-size: 45px;
+        }
+
+
+        p {
+
+            font-size: 20px;
+
+            color: #555;
+        }
+
+
+        .welcome {
+
+            color: rgb(55, 116, 116);
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin: 20px;
+        }
+
+
+        .buttons a {
+
+            display: inline-block;
+
+            background: rgb(55, 116, 116);
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 14px 25px;
+
+            margin: 10px;
+
+            border-radius: 7px;
+        }
+
+
+        .buttons a:hover {
+
+            background: rgb(40, 90, 90);
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    {% include "navbar.html" %}
+
+
+    <div class="hero">
+
+        <h1>
+            Employee Management System
+        </h1>
+
+
+        {% if session.get("fullname") %}
+
+        <div class="welcome">
+
+            Welcome, {{ session["fullname"] }}!
+
+        </div>
+
+        {% endif %}
+
+
+        <p>
+            Manage employee information easily and efficiently.
+        </p>
+
+
+        <div class="buttons">
+
+            <a href="{{ url_for('employee') }}">
+                View Employees
+            </a>
+
+
+            <a href="{{ url_for('add_employee') }}">
+                Add Employee
+            </a>
+
+
+            <a href="{{ url_for('search') }}">
+                Search Employee
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+

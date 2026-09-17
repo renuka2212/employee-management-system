@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Search Employee</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial;
+
+            background: #f4f7f8;
+        }
+
+
+        .container {
+
+            width: 92%;
+
+            margin: 40px auto;
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: rgb(55, 116, 116);
+        }
+
+
+        .search-box {
+
+            text-align: center;
+
+            margin: 30px;
+        }
+
+
+        .search-box input {
+
+            width: 350px;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+        }
+
+
+        .search-box button {
+
+            padding: 13px 22px;
+
+            background: rgb(55, 116, 116);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: white;
+        }
+
+
+        th {
+
+            background: rgb(55, 116, 116);
+
+            color: white;
+
+            padding: 14px;
+        }
+
+
+        td {
+
+            padding: 12px;
+
+            text-align: center;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .message {
+
+            text-align: center;
+
+            font-size: 18px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    {% include "navbar.html" %}
+
+
+    <div class="container">
+
+        <h1>
+            Search Employee
+        </h1>
+
+
+        <div class="search-box">
+
+            <form
+                method="GET"
+                action="{{ url_for('search') }}">
+
+                <input
+                    type="text"
+                    name="keyword"
+                    value="{{ keyword }}"
+                    placeholder="Search name, username, email or department">
+
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% if keyword %}
+
+
+            {% if employees %}
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Full Name</th>
+
+                    <th>Username</th>
+
+                    <th>Email</th>
+
+                    <th>Phone</th>
+
+                    <th>Department</th>
+
+                    <th>Salary</th>
+
+                </tr>
+
+
+                {% for employee in employees %}
+
+                <tr>
+
+                    <td>
+                        {{ employee["id"] }}
+                    </td>
+
+                    <td>
+                        {{ employee["fullname"] }}
+                    </td>
+
+                    <td>
+                        {{ employee["username"] or "Not Added" }}
+                    </td>
+
+                    <td>
+                        {{ employee["email"] or "Not Added" }}
+                    </td>
+
+                    <td>
+                        {{ employee["phone"] or "Not Added" }}
+                    </td>
+
+                    <td>
+                        {{ employee["department"] or "Not Added" }}
+                    </td>
+
+                    <td>
+                        {{ employee["salary"] or "Not Added" }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+
+            {% else %}
+
+            <p class="message">
+                No employee found.
+            </p>
+
+            {% endif %}
+
+
+        {% else %}
+
+        <p class="message">
+            Enter employee name or username to search.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
