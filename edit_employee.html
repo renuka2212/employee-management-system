@@ -597,23 +597,23 @@
 
 
         <form
-            action="/edit-employee/{{ employee['id'] }}"
+            action="/edit_employee/{{ employee['id'] }}"
             method="POST">
 
 
-            <!-- Employee Name -->
+            <!-- Employee fullName -->
 
-            <label for="name">
+            <label for="fullname">
 
-                Employee Name
+                Employee fullName
 
             </label>
 
             <input
                 type="text"
                 id="name"
-                name="name"
-                value="{{ employee['name'] }}"
+                name="fullname"
+                value="{{ employee['fullname'] }}"
                 required>
 
 
