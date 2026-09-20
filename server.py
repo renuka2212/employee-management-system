@@ -183,125 +183,97 @@ def login():
         "login.html",
         error=error
     )
-# =========================================
-# ADD EMPLOYEE PAGE
-# =========================================
-
-@app.route("/add-employee", methods=["GET"])
-def add_employee_page():
-
-    return render_template("add-employee.html")
 
 
-# =========================================
+# =========================================================
 # ADD EMPLOYEE
-# =========================================
+# =========================================================
 
-@app.route("/add-employee", methods=["POST"])
+@app.route("/add_employee", methods=["GET", "POST"])
 def add_employee():
 
-    name = request.form.get("name")
-    email = request.form.get("email")
-    phone = request.form.get("phone")
-    department = request.form.get("department")
-    salary = request.form.get("salary")
-    joining_date = request.form.get("joining_date")
-    address = request.form.get("address")
+    if request.method == "POST":
 
-    print("=================================")
-    print("ADDING EMPLOYEE")
-    print("Name:", name)
-    print("Email:", email)
-    print("Phone:", phone)
-    print("Department:", department)
-    print("Salary:", salary)
-    print("Joining Date:", joining_date)
-    print("Address:", address)
-    print("=================================")
+        fullname = request.form["fullname"]
+        username = request.form["username"]
+        email = request.form["email"]
+        phone = request.form["phone"]
+        department = request.form["department"]
+        salary = request.form["salary"]
+        joining_date = request.form["joining_date"]
+        address = request.form["address"]
 
-    connection = sqlite3.connect("users.db")
+        conn = get_db()
+        cursor = conn.cursor()
 
-    cursor = connection.cursor()
-
-    try:
-
+        # Check whether this registered username
+        # already exists in employee table
         cursor.execute("""
-            INSERT INTO employees
-            (
-                name,
+            SELECT *
+            FROM employees
+            WHERE username = ?
+        """, (username,))
+
+        existing_employee = cursor.fetchone()
+
+        if existing_employee:
+
+            # Update existing registered employee
+            cursor.execute("""
+                UPDATE employees
+                SET fullname = ?,
+                    email = ?,
+                    phone = ?,
+                    department = ?,
+                    salary = ?,
+                    joining_date = ?,
+                    address = ?
+                WHERE username = ?
+            """, (
+                fullname,
+                email,
+                phone,
+                department,
+                salary,
+                joining_date,
+                address,
+                username
+            ))
+
+        else:
+
+            # Add completely new employee
+            cursor.execute("""
+                INSERT INTO employees
+                (
+                    fullname,
+                    username,
+                    email,
+                    phone,
+                    department,
+                    salary,
+                    joining_date,
+                    address
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                fullname,
+                username,
                 email,
                 phone,
                 department,
                 salary,
                 joining_date,
                 address
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            name,
-            email,
-            phone,
-            department,
-            salary,
-            joining_date,
-            address
-        ))
+            ))
 
-        connection.commit()
+        conn.commit()
+        conn.close()
 
-        print("Employee inserted successfully!")
-        print("New Employee ID:", cursor.lastrowid)
+        return redirect("/employee")
 
-    except sqlite3.Error as error:
+    return render_template("add_employee.html")
 
-        connection.rollback()
-
-        print("Database Error:", error)
-
-        connection.close()
-
-        return f"""
-        <h2>Error adding employee</h2>
-
-        <p>{error}</p>
-
-        <br>
-
-        <a href="/add-employee">
-            Go Back
-        </a>
-        """
-
-    connection.close()
-
-    return redirect("/employees")
-
-
-# =========================================
-# EMPLOYEES LIST
-# =========================================
-
-@app.route("/employees")
-def employees():
-
-    connection = get_database_connection()
-
-    cursor = connection.cursor()
-
-    cursor.execute("""
-        SELECT *
-        FROM employees
-        ORDER BY id DESC
-    """)
-
-    employees = cursor.fetchall()
-
-    connection.close()
-
-    return render_template(
-        "employees.html",
-        employees=employees
-    )
 
 # =========================================================
 # EMPLOYEE LIST
@@ -368,6 +340,69 @@ def search():
         employees=employees,
         keyword=keyword
     )
+# =========================================================
+# EDIT EMPLOYEE
+# =========================================================
+
+@app.route("/edit_employee/<int:id>", methods=["GET", "POST"])
+def edit_employee(id):
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    if request.method == "GET":
+
+        cursor.execute("""
+            SELECT *
+            FROM employees
+            WHERE id = ?
+        """, (id,))
+
+        employee = cursor.fetchone()
+
+        conn.close()
+
+        if employee is None:
+            return "Employee not found"
+
+        return render_template(
+            "edit_employee.html",
+            employee=employee
+        )
+
+    fullname = request.form["fullname"]
+    email = request.form["email"]
+    phone = request.form["phone"]
+    department = request.form["department"]
+    salary = request.form["salary"]
+    joining_date = request.form["joining_date"]
+    address = request.form["address"]
+
+    cursor.execute("""
+        UPDATE employees
+        SET fullname = ?,
+            email = ?,
+            phone = ?,
+            department = ?,
+            salary = ?,
+            joining_date = ?,
+            address = ?
+        WHERE id = ?
+    """, (
+        fullname,
+        email,
+        phone,
+        department,
+        salary,
+        joining_date,
+        address,
+        id
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/employee")
 
 
 # =========================================================
@@ -400,43 +435,3 @@ if __name__ == "__main__":
     create_database()
 
     app.run(debug=True)
-
-    # =========================================
-# EDIT EMPLOYEE - DISPLAY FORM
-# =========================================
-
-@app.route("/edit-employee/<int:id>")
-def edit_employee_page(id):
-
-    connection = get_database_connection()
-
-    cursor = connection.cursor()
-
-    cursor.execute("""
-        SELECT *
-        FROM employees
-        WHERE id = ?
-    """, (id,))
-
-    employee = cursor.fetchone()
-
-    connection.close()
-
-    if employee is None:
-
-        return """
-        <h2>Employee not found!</h2>
-
-        <br>
-
-        <a href="/employees">
-            Back to Employees
-        </a>
-        """
-
-    return render_template(
-        "edit-employee.html",
-        employee=employee
-    )
-    
-
