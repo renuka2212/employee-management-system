@@ -1,122 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<nav class="navbar">
+<head>
 
-    <div class="logo">
-        Employee Management
-    </div>
+    <meta charset="UTF-8">
 
-    <div class="nav-links">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-        <a href="{{ url_for('home') }}">
-            Home
-        </a>
+    <title>Employee Management System</title>
 
-        <a href="{{ url_for('employee') }}">
-            Employee
-        </a>
+    <style>
 
-        <a href="{{ url_for('add_employee') }}">
-            Add Employee
-        </a>
+        /* =========================
+           DEFAULT
+        ========================= */
 
-        <a href="{{ url_for('search') }}">
-            Search
-        </a>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <a href="{{ url_for('register') }}">
-            Register
-        </a>
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
 
-        <a href="{{ url_for('login') }}">
-            Login
-        </a>
-
-    </div>
-
-</nav>
+            transition:
+                background-color 0.3s ease,
+                color 0.3s ease;
+        }
 
 
-<style>
+        /* =========================
+           LIGHT MODE
+        ========================= */
 
-    .navbar {
+        body.light {
+            background-color: #f5f5f5;
+            color: #222;
+        }
 
-        background: rgb(55, 116, 116);
+        body.light .content {
+            background-color: white;
+            color: #222;
+        }
 
-        padding: 18px 30px;
+        body.light .content h1 {
+            color: #222;
+        }
 
-        display: flex;
-
-        justify-content: space-between;
-
-        align-items: center;
-
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-
-
-    .logo {
-
-        color: white;
-
-        font-size: 22px;
-
-        font-weight: bold;
-    }
+        body.light .content p {
+            color: #555;
+        }
 
 
-    .nav-links {
+        /* =========================
+           DARK MODE
+        ========================= */
 
-        display: flex;
+        body.dark {
+            background-color: #121212;
+            color: white;
+        }
 
-        gap: 15px;
+        body.dark .content {
+            background-color: #1e1e1e;
+            color: white;
+        }
 
-        align-items: center;
-    }
+        body.dark .content h1 {
+            color: white;
+        }
 
-
-    .nav-links a {
-
-        color: white;
-
-        text-decoration: none;
-
-        font-size: 16px;
-
-        font-weight: bold;
-
-        padding: 8px 12px;
-
-        border-radius: 5px;
-
-        transition: 0.3s;
-    }
+        body.dark .content p {
+            color: #ddd;
+        }
 
 
-    .nav-links a:hover {
-
-        background-color: white;
-
-        color: rgb(55, 116, 116);
-    }
-
-
-    @media(max-width:900px) {
+        /* =========================
+           NAVBAR
+        ========================= */
 
         .navbar {
+            background-color: #222;
 
-            flex-direction: column;
+            padding: 15px 30px;
 
-            gap: 15px;
+            display: flex;
+
+            align-items: center;
+
+            min-height: 70px;
         }
+
+
+        /* =========================
+           LOGO
+        ========================= */
+
+        .logo {
+            color: white;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin-right: auto;
+        }
+
+
+        /* =========================
+           THEME BUTTONS
+        ========================= */
+
+        .theme-buttons {
+            display: flex;
+
+            gap: 10px;
+
+            margin-right: 30px;
+        }
+
+        .theme-buttons a {
+            color: white;
+
+            text-decoration: none;
+
+            border: 1px solid #00bcd4;
+
+            padding: 8px 12px;
+
+            border-radius: 5px;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .theme-buttons a:hover {
+            background-color: #00bcd4;
+        }
+
+
+        /* =========================
+           NAV LINKS
+        ========================= */
 
         .nav-links {
+            display: flex;
 
-            flex-wrap: wrap;
+            align-items: center;
 
-            justify-content: center;
+            list-style: none;
+
+            gap: 20px;
         }
 
-    }
+        .nav-links a {
+            color: white;
 
-</style>
+            text-decoration: none;
 
+            font-size: 16px;
+
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00bcd4;
+        }
+
+
+        /* =========================
+           LOGOUT BUTTON
+        ========================= */
+
+        .logout-button {
+            background-color: #e53935;
+
+            color: white !important;
+
+            padding: 8px 14px;
+
+            border-radius: 5px;
+
+            text-decoration: none;
+
+            font-size: 14px !important;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #c62828;
+
+            color: white !important;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            width: 80%;
+
+            margin: 60px auto;
+
+            padding: 60px 30px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            transition: 0.3s;
+        }
+
+
+        .content h1 {
+            margin-bottom: 20px;
+        }
+
+
+        .content p {
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                flex-wrap: wrap;
+
+                gap: 15px;
+
+                padding: 15px;
+            }
+
+            .logo {
+                width: 100%;
+
+                margin-right: 0;
+
+                text-align: center;
+            }
+
+            .theme-buttons {
+                margin-right: 0;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                width: 100%;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<!-- Flask sends theme = light/dark -->
+
+<body class="{{ theme }}">
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+            Employee Management System
+        </div>
+
+
+        <!-- THEME BUTTONS -->
+
+        <div class="theme-buttons">
+
+            <a href="/set-theme/light">
+                ☀ Light
+            </a>
+
+            <a href="/set-theme/dark">
+                🌙 Dark
+            </a>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="/">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="/employee">
+                    employee
+                </a>
+            </li>
+
+            <li>
+                <a href="/Add employee">
+                    Add employee
+                </a>
+            </li>
+
+            <li>
+                <a href="/search">
+                    Search
+                </a>
+            </li>
+
+            <!-- LOGOUT -->
+
+            <li>
+                <a href="/logout"
+                   class="logout-button">
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <div class="content">
+
+        {% if fullname %}
+
+            <h1>
+                <p>Welcome, {{ fullname }}!</p>
+            </h1>
+
+        {% else %}
+
+            <h1>
+                <p>Welcome to Employee Management System</p>
+            </h1>
+
+        {% endif %}
+
+
+        <p>
+            <p>Manage your employees easily.<p
+        </p>
+
+    </div>
+
+
+</body>
+
+</html>

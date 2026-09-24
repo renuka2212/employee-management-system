@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Registration</title>
 
     <style>
 
@@ -29,8 +33,9 @@
             );
         }
 
-        .login-card {
+        .register-card {
             width: 380px;
+
             padding: 35px;
 
             background: white;
@@ -42,7 +47,7 @@
             text-align: center;
         }
 
-        .login-card h1 {
+        .register-card h2 {
             margin-bottom: 30px;
 
             color: #333;
@@ -52,6 +57,7 @@
 
         .form-group {
             text-align: left;
+
             margin-bottom: 20px;
         }
 
@@ -85,7 +91,7 @@
             box-shadow: 0 0 5px rgba(102, 126, 234, 0.4);
         }
 
-        .login-btn {
+        .register-btn {
             width: 100%;
 
             padding: 12px;
@@ -104,10 +110,10 @@
 
             cursor: pointer;
 
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
-        .login-btn:hover {
+        .register-btn:hover {
             background: #5568d8;
         }
 
@@ -135,7 +141,7 @@
             background: #dddddd;
         }
 
-        .register-text {
+        .login-text {
             margin-top: 20px;
 
             color: #555;
@@ -143,7 +149,7 @@
             font-size: 14px;
         }
 
-        .register-text a {
+        .login-text a {
             color: #667eea;
 
             font-weight: bold;
@@ -151,20 +157,48 @@
             text-decoration: none;
         }
 
-        .register-text a:hover {
+        .login-text a:hover {
             text-decoration: underline;
         }
 
     </style>
+
 </head>
 
 <body>
 
-    <div class="login-card">
+    <div class="register-card">
 
-        <h1>LOGIN FORM</h1>
+        <h2>REGISTRATION FORM</h2>
 
-        <form id="loginform" action="/login" method="post">
+
+        {% if error %}
+
+        <p style="color: red; font-weight: bold;">
+            {{ error }}
+        </p>
+
+        {% endif %}
+
+
+        <form
+            id="registrationForm"
+            action="/register"
+            method="POST">
+
+
+            <div class="form-group">
+
+                <label>Full name:</label>
+
+                <input
+                    type="text"
+                    id="Fullname"
+                    name="fullname"
+                    required>
+
+            </div>
+
 
             <div class="form-group">
 
@@ -174,8 +208,7 @@
                     type="text"
                     id="Username"
                     name="username"
-                    required
-                >
+                    required>
 
             </div>
 
@@ -188,32 +221,29 @@
                     type="password"
                     id="Password"
                     name="password"
-                    required
-                >
+                    required>
 
             </div>
 
 
             <input
                 type="submit"
-                value="Login"
-                class="login-btn"
-            >
+                value="Register"
+                class="register-btn">
 
 
             <input
                 type="reset"
                 value="Reset"
-                class="reset-btn"
-            >
+                class="reset-btn">
 
 
-            <p class="register-text">
+            <p class="login-text">
 
-                Don't have an account?
+                Already have an account?
 
-                <a href="/register">
-                    Register here
+                <a href="/login">
+                    Login here
                 </a>
 
             </p>
@@ -223,5 +253,5 @@
     </div>
 
 </body>
-</html>
 
+</html>
